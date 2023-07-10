@@ -142,6 +142,7 @@
 #include "json_savefile_importing.dm"
 #include "keybinding_init.dm"
 #include "knockoff_component.dm"
+#include "language_transfer.dm"
 #include "language_key_conflicts.dm"
 #include "leash.dm"
 #include "lesserform.dm"
