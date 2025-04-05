@@ -5,6 +5,7 @@
 	overlay_icon = "motorized_wheelchair_overlay"
 	foldabletype = null
 	max_integrity = 150
+	ttv_icon = "motor_chair_ttv"
 	///How "fast" the wheelchair goes only affects ramming
 	var/speed = 2
 	///Self explanatory, ratio of how much power we use
@@ -18,7 +19,6 @@
 		/datum/stock_part/manipulator,
 		/datum/stock_part/manipulator,
 		/datum/stock_part/capacitor,
-		/datum/stock_part/cell,
 	)
 	///power cell we draw power from
 	var/obj/item/stock_parts/cell/power_cell
@@ -29,8 +29,8 @@
 	. = ..()
 	// Add tier 1 stock parts so that non-crafted wheelchairs aren't empty
 	component_parts += GLOB.stock_part_datums[/datum/stock_part/capacitor]
-	component_parts += GLOB.stock_part_datums[/datum/stock_part/servo]
-	component_parts += GLOB.stock_part_datums[/datum/stock_part/servo]
+	component_parts += GLOB.stock_part_datums[/datum/stock_part/manipulator]
+	component_parts += GLOB.stock_part_datums[/datum/stock_part/manipulator]
 	power_cell = new /obj/item/stock_parts/cell(src)
 	refresh_parts()
 
@@ -73,14 +73,6 @@
 
 /obj/vehicle/ridden/wheelchair/motorized/get_cell()
 	return power_cell
-
-/obj/vehicle/ridden/wheelchair/motorized/atom_destruction(damage_flag)
-	for(var/datum/stock_part/part in component_parts)
-		new part.physical_object_type(drop_location())
-	if(!isnull(power_cell))
-		power_cell.forceMove(drop_location())
-		power_cell = null
-	return ..()
 
 /obj/vehicle/ridden/wheelchair/motorized/relaymove(mob/living/user, direction)
 	if(!power_cell)
@@ -184,12 +176,18 @@
 		if(!(guy in buckled_mobs))
 			Bump(guy)
 
+/// Detonate an armed explosive on this wheelchair
+/obj/vehicle/ridden/wheelchair/motorized/detonate_bomb()
+	if (obj_flags & EMAGGED)
+		visible_message(span_boldwarning("[src] explodes!!"))
+		explosion(src, devastation_range = -1, heavy_impact_range = 1, light_impact_range = 3, flash_range = 2, adminlog = FALSE)
+	return ..()
+
 /obj/vehicle/ridden/wheelchair/motorized/Bump(atom/bumped_atom)
 	. = ..()
 	// Here is the shitty emag functionality.
 	if(obj_flags & EMAGGED && (isclosedturf(bumped_atom) || isliving(bumped_atom)))
-		explosion(src, devastation_range = -1, heavy_impact_range = 1, light_impact_range = 3, flash_range = 2, adminlog = FALSE)
-		visible_message(span_boldwarning("[src] explodes!!"))
+		detonate_bomb()
 		return
 	// If the speed is higher than delay_multiplier throw the person on the wheelchair away
 	if(bumped_atom.density && speed > delay_multiplier && has_buckled_mobs())
@@ -214,10 +212,12 @@
 	if (obj_flags & EMAGGED)
 		return FALSE
 
-	if (panel_open)
-		balloon_alert(user, "open maintenance panel!")
+	if (!panel_open)
+		balloon_alert(user, "panel is closed!")
 		return FALSE
 
+	if (!bomb_attached)
+		RegisterSignal(src, COMSIG_WHEELCHAIR_BELL_RANG, PROC_REF(on_bell_rang))
 	balloon_alert(user, "bomb implanted...?")
 	visible_message(span_warning("A bomb appears in [src], what the fuck?"))
 	obj_flags |= EMAGGED

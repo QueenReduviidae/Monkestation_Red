@@ -45,3 +45,6 @@
 
 /// From /datum/action/cooldown/mob_cooldown/assume_form/proc/assume_appearances(), sent to the action owner: (atom/movable/target)
 #define COMSIG_ACTION_DISGUISED_APPEARANCE "mob_ability_disguise_appearance"
+
+/// From /datum/action/vehicle/ridden/wheelchair/bell/Trigger():
+#define COMSIG_WHEELCHAIR_BELL_RANG "wheelchair_bell_rang"
