@@ -302,10 +302,14 @@ GLOBAL_LIST_INIT(prototype_language_holders, init_language_holder_prototypes())
 	)
 
 /datum/language_holder/oozeling
-	understood_languages = list(/datum/language/common = list(LANGUAGE_ATOM),
-								/datum/language/slime = list(LANGUAGE_ATOM))
-	spoken_languages = list(/datum/language/common = list(LANGUAGE_ATOM),
-							/datum/language/slime = list(LANGUAGE_ATOM))
+	understood_languages = list(
+		/datum/language/common = list(LANGUAGE_ATOM),
+		/datum/language/slime = list(LANGUAGE_ATOM),
+	)
+	spoken_languages = list(
+		/datum/language/common = list(LANGUAGE_ATOM),
+		/datum/language/slime = list(LANGUAGE_ATOM),
+	)
 
 /datum/language_holder/lightbringer
 	understood_languages = list(/datum/language/slime = list(LANGUAGE_ATOM))
@@ -329,6 +333,7 @@ GLOBAL_LIST_INIT(prototype_language_holders, init_language_holder_prototypes())
 
 /datum/language_holder/lizard/silver
 	understood_languages = list(
+		/datum/language/common = list(LANGUAGE_ATOM),
 		/datum/language/uncommon = list(LANGUAGE_ATOM),
 		/datum/language/draconic = list(LANGUAGE_ATOM),
 	)
