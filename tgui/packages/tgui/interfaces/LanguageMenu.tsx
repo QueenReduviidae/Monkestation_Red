@@ -7,8 +7,8 @@ import {
   Stack,
   Table,
   Tooltip,
-} from 'tgui-core/components';
-import { BooleanLike } from 'tgui-core/react';
+} from '../components';
+import { BooleanLike } from 'common/react';
 
 import { useBackend } from '../backend';
 import { Window } from '../layouts';
@@ -232,10 +232,7 @@ export const LanguageMenu = (props) => {
               <Table.Cell>Speak</Table.Cell>
               <Table.Cell>Understand</Table.Cell>
               <Table.Cell>
-                <Tooltip
-                  content="Use this key in your message
-                  to speak in this language."
-                >
+                <Tooltip content="Use this key in your message to speak in this language.">
                   <Box
                     inline
                     style={{
@@ -248,10 +245,7 @@ export const LanguageMenu = (props) => {
               </Table.Cell>
               {!!is_living && (
                 <Table.Cell>
-                  <Tooltip
-                    content="Determines which language you speak
-                    naturally, without using the 'key'."
-                  >
+                  <Tooltip content="Determines which language you speak naturally, without using the 'key'.">
                     <Box
                       inline
                       style={{

@@ -52,7 +52,7 @@
 	if(.)
 		return
 
-	var/mob/user = ui.user
+	var/mob/user = usr
 	var/atom/movable/speaker = language_holder.owner
 	var/is_admin = check_rights_for(user.client, R_ADMIN)
 	var/language_name = params["language_name"]
