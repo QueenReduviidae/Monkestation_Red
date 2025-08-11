@@ -30,7 +30,6 @@
 
 	mutant_organs = list(
 		/obj/item/organ/internal/cyberimp/arm/item_set/power_cord,
-		/obj/item/organ/internal/cyberimp/cyberlink/nt_low,
 	)
 	external_organs = list(
 		/obj/item/organ/external/antennae/ipc = "None"
@@ -439,3 +438,13 @@
 		)
 
 	return to_add
+
+/datum/species/ipc/handle_chemical(datum/reagent/chem, mob/living/carbon/human/ipc, seconds_per_tick, times_fired)
+	if(chem?.synthetic_boozepwr)
+		var/booze_power = chem.synthetic_boozepwr
+		if(HAS_TRAIT(ipc, TRAIT_ALCOHOL_TOLERANCE))
+			booze_power *= 0.7
+		if(HAS_TRAIT(ipc, TRAIT_LIGHT_DRINKER))
+			booze_power *= 2
+		ipc.adjust_drunk_effect(sqrt(chem.volume) * booze_power * ALCOHOL_RATE * REM * seconds_per_tick)
+	return ..()
