@@ -30,7 +30,7 @@
 	medical_record_text = "Patient does not speak Galactic Common and may require an interpreter."
 
 /datum/quirk/listener/add_unique(client/client_source)
-	quirk_holder.remove_language(/datum/language/common, language_flags = SPOKEN_LANGUAGE, source = LANGUAGE_ATOM)
+	quirk_holder.remove_language(/datum/language/common, language_flags = SPOKEN_LANGUAGE, source = LANGUAGE_ALL)
 	if (!iscarbon(quirk_holder))
 		return
 	var/mob/living/carbon/carbon_holder = quirk_holder
