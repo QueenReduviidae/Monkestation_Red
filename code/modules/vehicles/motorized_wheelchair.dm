@@ -95,7 +95,12 @@
 	user.put_in_hands(power_cell)
 	power_cell = null
 
-/obj/vehicle/ridden/wheelchair/motorized/attackby(obj/item/attacking_item, mob/user, params)
+/obj/vehicle/ridden/wheelchair/motorized/attackby(obj/item/attacking_item, mob/user, list/modifiers, list/attack_modifiers)
+	if(attacking_item.tool_behaviour == TOOL_SCREWDRIVER)
+		attacking_item.play_tool_sound(src)
+		panel_open = !panel_open
+		user.visible_message(span_notice("[user] [panel_open ? "opens" : "closes"] the maintenance panel on [src]."), span_notice("You [panel_open ? "open" : "close"] the maintenance panel."))
+		return
 	if(!panel_open)
 		return ..()
 
@@ -123,6 +128,7 @@
 		if(istype(newstockpart, type_to_check) && istype(oldstockpart, type_to_check))
 			if(newstockpart.tier > oldstockpart.tier)
 				// delete the part in the users hand and add the datum part to the component_list
+				attacking_item.moveToNullspace()
 				qdel(attacking_item)
 				component_parts += newstockpart
 				// create an new instance of the old datum stock part physical type & put it in the users hand
