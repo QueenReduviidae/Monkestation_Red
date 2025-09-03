@@ -94,8 +94,6 @@ GLOBAL_LIST_INIT(all_languages, init_all_languages())
 // /List of language prototypes to reference, assoc "name" = typepath
 GLOBAL_LIST_INIT(language_types_by_name, init_language_types_by_name())
 
-GLOBAL_LIST_EMPTY(sentient_disease_instances)
-
 GLOBAL_LIST_EMPTY(latejoin_ai_cores)
 
 GLOBAL_LIST_EMPTY(mob_config_movespeed_type_lookup)
