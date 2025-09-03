@@ -17,7 +17,7 @@
 		lang_icon.scale(32, 32)
 		return lang_icon
 
-	var/datum/universal_icon/unknown = uni_icon('icons/misc//language.dmi', "unknown")
+	var/datum/universal_icon/unknown = uni_icon('icons/misc/language.dmi', "unknown")
 	unknown.scale(32, 32)
 	return unknown
 
