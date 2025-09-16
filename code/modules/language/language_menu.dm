@@ -33,7 +33,7 @@
 		lang_data["desc"] = initial(language.desc)
 		lang_data["key"] = initial(language.key)
 		lang_data["is_default"] = (language == language_holder.selected_language)
-		lang_data["icon"] = text_ref(initial(language.icon))
+		lang_data["icon"] = initial(language.icon)
 		lang_data["icon_state"] = initial(language.icon_state)
 		if(speaker)
 			lang_data["can_speak"] = !!speaker.has_language(language, SPOKEN_LANGUAGE)
