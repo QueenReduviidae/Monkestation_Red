@@ -39,6 +39,7 @@
 #define LANGUAGE_BABEL "babel"
 #define LANGUAGE_BLOODSUCKER "bloodsucker"
 #define LANGUAGE_VASSAL "vassal"
+#define LANGUAGE_DARKSPAWN "darkspawn"
 
 // Language flags. Used in granting and removing languages.
 /// This language can be spoken.
