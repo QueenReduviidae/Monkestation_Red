@@ -4,7 +4,6 @@
 	inhand_icon_state = "dg_suit"
 	icon = 'monkestation/icons/obj/clothing/jobs/nanotrasen_representative_clothing_item.dmi'
 	worn_icon = 'monkestation/icons/mob/clothing/jobs/nanotrasen_representative_clothing.dmi'
-	worn_icon_digitigrade = 'monkestation/icons/mob/clothing/jobs/nanotrasen_representative_clothing-digi.dmi'
 	icon_state = "representative_jumpsuit"
 	can_adjust = FALSE
 
@@ -73,9 +72,9 @@
 	acid = 10
 	wound = 10
 
-/obj/item/storage/secure/briefcase/cash
+/obj/item/storage/briefcase/secure/cash
 // LOADSAMONEY
-/obj/item/storage/secure/briefcase/cash/PopulateContents()
+/obj/item/storage/briefcase/secure/cash/PopulateContents()
 	..()
 	for(var/iterator in 1 to 5)
 		new /obj/item/stack/spacecash/c500(src)
@@ -84,13 +83,28 @@
 	name = "representative's garment bag"
 	desc = "A bag for storing extra clothes and shoes. This one belongs to the Nanotrasen representative."
 
+/obj/item/storage/box/nt_cap
+	name = "box of Nanotrasen caps"
+	desc = "A box of baseball caps with the Nanotrasen logo. Glory to Nanotrasen!"
+	icon_state = "ntbox"
+	illustration = "writing"
+
+/obj/item/storage/box/nt_cap/PopulateContents()
+	..()
+	for(var/iterator in 1 to 7)
+		new /obj/item/clothing/head/soft/nt(src)
+
 /obj/item/storage/bag/garment/nanotrasen_representative/PopulateContents()
 	new /obj/item/clothing/under/rank/centcom/nanotrasen_representative(src)
 	new /obj/item/clothing/under/rank/centcom/nanotrasen_representative/turtleneck(src)
 	new /obj/item/clothing/under/rank/centcom/nanotrasen_representative/skirt(src)
 	new /obj/item/clothing/under/rank/centcom/nanotrasen_representative/skirtleneck(src)
 	new /obj/item/clothing/head/hats/nanotrasen_representative(src)
+	new /obj/item/clothing/under/rank/centcom/officercasual(src)
 	new /obj/item/clothing/suit/armor/vest/nanotrasen_representative/bathrobe(src)
 	new /obj/item/clothing/suit/armor/vest/nanotrasen_representative(src)
 	new /obj/item/clothing/gloves/color/black(src)
 	new /obj/item/clothing/shoes/laceup(src)
+	new /obj/item/clothing/under/rank/centcom/corporate_liaison(src)
+	new /obj/item/clothing/under/rank/centcom/corporate_liaison/skirt(src)
+	new /obj/item/clothing/head/soft/nt(src)

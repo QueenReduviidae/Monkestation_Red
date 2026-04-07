@@ -355,8 +355,11 @@
 		humanspawned.equip_in_one_of_slots(silly_little_scarf, slots, qdel_on_fail = FALSE)
 
 	var/obj/item/clothing/neck/link_scryer/loaded/new_scryer = new(spawned)
-	new_scryer.label = spawned.name
+	new_scryer.label = player_client?.prefs?.read_preference(/datum/preference/text/default_scryer_label) || spawned.real_name
 	new_scryer.update_name()
+	var/ringtone = player_client.prefs.read_preference(/datum/preference/choiced/call_ringtone)
+	if(ringtone)
+		new_scryer.set_ringtone(ringtone)
 
 	spawned.equip_to_slot_or_del(new_scryer, ITEM_SLOT_NECK, initial = FALSE)
 
@@ -438,7 +441,7 @@
 	name = "AI Triumvirate"
 	trait_type = STATION_TRAIT_NEUTRAL
 	show_in_report = TRUE
-	weight = 1
+	weight = 2 // Since were gibbing overflow
 	report_message = "Your station has been instated with three Nanotrasen Artificial Intelligence models."
 
 /datum/station_trait/triple_ai/New()
@@ -454,6 +457,7 @@
 
 	for(var/datum/job/ai/ai_datum in SSjob.joinable_occupations)
 		ai_datum.spawn_positions = 3
+		ai_datum.total_positions = 3
 	if(!pure)
 		for(var/obj/effect/landmark/start/ai/secondary/secondary_ai_spawn in GLOB.start_landmarks_list)
 			secondary_ai_spawn.latejoin_active = TRUE

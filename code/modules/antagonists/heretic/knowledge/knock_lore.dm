@@ -61,7 +61,7 @@
 /datum/heretic_knowledge/knock_grasp/proc/on_mansus_grasp(mob/living/source, mob/living/target)
 	SIGNAL_HANDLER
 	var/obj/item/clothing/under/suit = target.get_item_by_slot(ITEM_SLOT_ICLOTHING)
-	if(istype(suit) && suit.adjusted == NORMAL_STYLE)
+	if(istype(suit) && suit.adjusted == NORMAL_STYLE && suit.can_adjust)
 		suit.toggle_jumpsuit_adjust()
 		suit.update_appearance()
 
@@ -171,6 +171,7 @@
 	gain_text = "The power of my patron courses through my blade, willing their very flesh to part."
 	next_knowledge = list(/datum/heretic_knowledge/spell/caretaker_refuge)
 	route = PATH_KNOCK
+	required_path = PATH_KNOCK
 	wound_type = /datum/wound/slash/flesh/critical
 	var/chance = 35
 

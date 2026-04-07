@@ -99,6 +99,7 @@
 /datum/component/uplink/proc/handle_uplink_handler_update()
 	SIGNAL_HANDLER
 	SStgui.update_uis(src)
+	SStgui.update_static_data_for_all_viewers()
 
 /// When a new uplink is made via the syndicate beacon it locks all lockable uplinks and destroys replacement uplinks
 /datum/component/uplink/proc/handle_uplink_replaced()
@@ -228,7 +229,6 @@
 		data["primary_objectives"] = primary_objectives
 		data["potential_objectives"] = potential_objectives
 		data["active_objectives"] = active_objectives
-		data["completed_final_objective"] = uplink_handler.final_objective
 
 	var/list/stock_list = uplink_handler.item_stock.Copy()
 	var/list/extra_purchasable_stock = list()

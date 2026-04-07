@@ -6,7 +6,7 @@
 /obj/item/stock_parts/power_store/cell
 	name = "power cell"
 	desc = "A rechargeable electrochemical power cell."
-	icon = 'icons/obj/machines/cell_charger.dmi'
+	icon = 'icons/obj/power.dmi'
 	icon_state = "cell"
 	inhand_icon_state = "cell"
 	lefthand_file = 'icons/mob/inhands/items/devices_lefthand.dmi'
@@ -84,10 +84,6 @@
 	maxcharge = STANDARD_CELL_CHARGE * 0.5
 	custom_materials = list(/datum/material/glass=SMALL_MATERIAL_AMOUNT*0.4)
 
-/obj/item/stock_parts/power_store/cell/crap/Initialize(mapload)
-	AddElement(/datum/element/update_icon_blocker)
-	return ..()
-
 /obj/item/stock_parts/power_store/cell/crap/empty
 	empty = TRUE
 
@@ -98,10 +94,6 @@
 	maxcharge = STANDARD_CELL_CHARGE * 2.5
 	custom_materials = list(/datum/material/glass=SMALL_MATERIAL_AMOUNT*0.5)
 	chargerate = STANDARD_CELL_RATE * 0.5
-
-/obj/item/stock_parts/power_store/cell/upgraded/Initialize(mapload)
-	AddElement(/datum/element/update_icon_blocker)
-	return ..()
 
 /obj/item/stock_parts/power_store/cell/upgraded/plus
 	name = "upgraded power cell+"
@@ -246,21 +238,6 @@
 	maxcharge = STANDARD_CELL_CHARGE * 5
 	charge_light_type = null
 	connector_type = "slimecore"
-
-/obj/item/stock_parts/power_store/cell/beam_rifle
-	name = "beam rifle capacitor"
-	desc = "A high powered capacitor that can provide huge amounts of energy in an instant."
-	maxcharge = STANDARD_CELL_CHARGE * 50
-	chargerate = STANDARD_CELL_CHARGE * 5 //Extremely energy intensive
-
-/obj/item/stock_parts/power_store/cell/beam_rifle/corrupt()
-	return
-
-/obj/item/stock_parts/power_store/cell/beam_rifle/emp_act(severity)
-	. = ..()
-	if(. & EMP_PROTECT_SELF)
-		return
-	charge = clamp((charge-(10000/severity)),0,maxcharge)
 
 /obj/item/stock_parts/power_store/cell/emergency_light
 	name = "miniature power cell"

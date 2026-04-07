@@ -735,6 +735,11 @@
 	imp.implant(smart_mob, user)
 	smart_mob.AddComponent(/datum/component/simple_access, list(ACCESS_SYNDICATE, ACCESS_MAINT_TUNNELS))
 
+/obj/item/slimepotion/slime/sentience/nuclear/dangerous_horse
+	name = "dangerous pony potion"
+	desc = "A miraculous chemical mix that grants human like intelligence to pony beings. It has been modified with Syndicate technology to also grant an internal radio implant to the pony and authenticate with identification systems"
+	sentience_type = SENTIENCE_PONY
+
 /obj/item/slimepotion/transference
 	name = "consciousness transference potion"
 	desc = "A strange slime-based chemical that, when used, allows the user to transfer their consciousness to a lesser being."
@@ -1044,17 +1049,3 @@
 	turf_type = /turf/open/floor/sepia
 	merge_type = /obj/item/stack/tile/sepia
 
-/obj/item/areaeditor/blueprints/slime
-	name = "cerulean prints"
-	desc = "A one use yet of blueprints made of jelly like organic material. Extends the reach of the management console."
-	color = "#2956B2"
-
-/obj/item/areaeditor/blueprints/slime/edit_area()
-	..()
-	var/area/area = get_area(src)
-	for (var/list/zlevel_turfs as anything in area.get_zlevel_turf_lists())
-		for(var/turf/area_turf as anything in zlevel_turfs)
-			area_turf.remove_atom_colour(WASHABLE_COLOUR_PRIORITY)
-			area_turf.add_atom_colour("#2956B2", FIXED_COLOUR_PRIORITY)
-	area.area_flags |= XENOBIOLOGY_COMPATIBLE
-	qdel(src)

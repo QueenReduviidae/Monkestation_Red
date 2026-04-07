@@ -26,7 +26,7 @@
 				owner.balloon_alert(owner, "cannot function with sugar in host")
 				return
 			// we have a host with sugar and our host is dead. Amazing fuckup
-			owner.balloon_alert(owner, "Struggling to leave")
+			owner.balloon_alert(owner, "struggling to leave")
 			to_chat(cortical_owner, span_userdanger("We struggle to leave our host, barelly able to due to the sugar in their blood no longer moving, this will take time..."))
 			StartCooldown(30 SECONDS) // stay in place now
 			sleep(30 SECONDS)
@@ -56,7 +56,7 @@
 	var/list/usable_hosts = list()
 	for(var/mob/living/carbon/human/listed_human in range(1, cortical_owner))
 		// no non-human hosts
-		if(!ishuman(listed_human) || ismonkey(listed_human))
+		if(!ishuman(listed_human) || ismonkeybasic(listed_human))
 			to_chat(cortical_owner, span_warning("[listed_human] is not a human!"))
 			continue
 		// cannot have multiple borers (for now)
@@ -116,7 +116,9 @@
 
 	var/obj/item/organ/internal/borer_body/borer_organ = new(cortical_owner.human_host)
 	borer_organ.borer = owner
-	borer_organ.Insert(cortical_owner.human_host)
+	borer_organ.Follow_Insert(cortical_owner.human_host, ORGAN_SLOT_BRAIN) // The worm follows the brain
+	cortical_owner.bodytemp_heat_damage_limit = cortical_owner.human_host.bodytemp_heat_damage_limit
+	cortical_owner.bodytemp_cold_damage_limit = cortical_owner.human_host.bodytemp_cold_damage_limit
 
 	var/turf/human_turftwo = get_turf(cortical_owner.human_host)
 	var/logging_text = "[key_name(cortical_owner)] went into [key_name(cortical_owner.human_host)] at [loc_name(human_turftwo)]"

@@ -11,7 +11,7 @@
 	/// The current uplink flag of this uplink
 	var/uplink_flag = NONE
 	/// This uplink has progression
-	var/has_progression = TRUE
+	var/has_progression = FALSE
 	/// The amount of experience points this traitor has
 	var/progression_points = 0
 	/// The purchase log of this uplink handler
@@ -36,8 +36,6 @@
 	var/list/completed_objectives = list()
 	/// All objectives assigned by type to handle any duplicates
 	var/list/potential_duplicate_objectives = list()
-	/// Text of the final objective, once assigned. Used for uplink data and traitor greentext. Empty string means not yet reached.
-	var/final_objective = ""
 	/// Objectives that must be completed for traitor greentext. Set by the traitor datum.
 	var/list/primary_objectives
 	/// The role that this uplink handler is associated to.
@@ -85,6 +83,12 @@
 
 	if(shop_locked)
 		return FALSE
+
+	if(to_purchase.lock_secondary_objectives)
+		// don't check active objectives, bc we'll just auto-cancel them if this is bought
+		for(var/datum/traitor_objective/objective as anything in completed_objectives)
+			if(objective.objective_state == OBJECTIVE_STATE_COMPLETED)
+				return FALSE
 
 //monkestation edit start
 	if(!(ignore_locked) && (to_purchase.type in locked_entries))
@@ -252,8 +256,6 @@
 		objective.update_progression_reward()
 
 /datum/uplink_handler/proc/abort_objective(datum/traitor_objective/to_abort)
-	if(istype(to_abort, /datum/traitor_objective/ultimate))
-		return
 	if(to_abort.objective_state != OBJECTIVE_STATE_ACTIVE)
 		return
 	to_abort.fail_objective(penalty_cost = to_abort.telecrystal_penalty)
@@ -276,3 +278,14 @@
 		return
 
 	to_act_on.ui_perform_action(user, action)
+
+/datum/uplink_handler/proc/disable_secondary_objectives()
+	for(var/datum/traitor_objective/objective as anything in active_objectives)
+		objective.fail_objective(penalty_cost = 0, trigger_update = FALSE)
+	has_objectives = FALSE
+	can_take_objectives = FALSE
+	potential_objectives.Cut()
+	maximum_active_objectives = 0
+	maximum_potential_objectives = 0
+	SStraitor.uplink_handlers -= src
+	on_update()

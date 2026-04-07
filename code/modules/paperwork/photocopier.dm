@@ -386,6 +386,7 @@
 	toEmbed.psize_x = 128
 	toEmbed.psize_y = 128
 	copied_ass.set_picture(toEmbed, TRUE, TRUE)
+	copied_ass.assphoto = TRUE
 	toner_cartridge.charges -= ASS_TONER_USE
 
 /**
@@ -435,8 +436,8 @@
 		toner_cartridge = object
 		to_chat(user, span_notice("You insert [object] into [src]."))
 
-	else if(istype(object, /obj/item/areaeditor/blueprints))
-		to_chat(user, span_warning("The Blueprint is too large to put into the copier. You need to find something else to record the document."))
+	else if(istype(object, /obj/item/blueprints))
+		to_chat(user, span_warning("\The [object] is too large to put into the copier. You need to find something else to record the document."))
 
 	else if(istype(object, /obj/item/paperwork))
 		if(istype(object, /obj/item/paperwork/photocopy)) //No infinite paper chain. You need the original paperwork to make more copies.

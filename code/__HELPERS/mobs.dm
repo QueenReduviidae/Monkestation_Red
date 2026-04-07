@@ -114,8 +114,10 @@
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/anime_head, GLOB.anime_top_list)
 	if(!length(GLOB.anime_middle_list))
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/anime_middle, GLOB.anime_middle_list)
-	if(!length(GLOB.anime_top_list))
+	if(!length(GLOB.anime_bottom_list))
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/anime_bottom, GLOB.anime_bottom_list)
+	if(!length(GLOB.anime_halo_list))
+		init_sprite_accessory_subtypes(/datum/sprite_accessory/anime_halo, GLOB.anime_halo_list)
 	if(!length(GLOB.arachnid_appendages_list))
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/arachnid_appendages, GLOB.arachnid_appendages_list)
 	if(!length(GLOB.arachnid_chelicerae_list))
@@ -179,6 +181,7 @@
 		"arachnid_appendages" = pick(GLOB.arachnid_appendages_list), //Monkestation Addition
 		"arachnid_chelicerae" = pick(GLOB.arachnid_chelicerae_list), //Monkestation Addition
 		"animecolor" = "#[pick("7F","FF")][pick("7F","FF")][pick("7F","FF")]", //Monkestation Addition
+		"animehalocolor" = "#[pick("7F","FF")][pick("7F","FF")][pick("7F","FF")]",
 		"goblin_ears" = pick(GLOB.goblin_ears_list), //Monkestation Addition
 		"goblin_nose" = pick(GLOB.goblin_nose_list), //Monkestation Addition
 		"floran_leaves" = pick(GLOB.floran_leaves_list), //Monkestation Addition
@@ -516,11 +519,8 @@ GLOBAL_LIST_EMPTY(species_list)
 // Automatically gives the class deadsay to the whole message (message + source)
 /proc/deadchat_broadcast(message, source=null, mob/follow_target=null, turf/turf_target=null, speaker_key=null, message_type=DEADCHAT_REGULAR, admin_only=FALSE)
 	message = span_deadsay("[source][span_linkify(message)]")
-#ifndef DISABLE_DEMOS
-	if(!admin_only)
-		SSdemo.write_chat_global(message)
-#endif
 
+	var/speaker_ckey = speaker_key ? ckey(speaker_key) : null // so we only have to do this once
 	for(var/mob/M in GLOB.player_list)
 		var/chat_toggles = TOGGLES_DEFAULT_CHAT
 		var/toggles = TOGGLES_DEFAULT
@@ -529,7 +529,8 @@ GLOBAL_LIST_EMPTY(species_list)
 			var/datum/preferences/prefs = M.client?.prefs
 			chat_toggles = prefs.chat_toggles
 			toggles = prefs.toggles
-			ignoring = prefs.ignoring
+			for(var/ignored_key in prefs.ignoring)
+				LAZYADD(ignoring, ckey(ignored_key))
 		if(admin_only)
 			if (!M.client?.holder?.check_for_rights(R_ADMIN)) // monkestation edit: only include admins with the +ADMIN permission
 				return
@@ -546,7 +547,7 @@ GLOBAL_LIST_EMPTY(species_list)
 			continue
 		if(M.stat != DEAD && !override)
 			continue
-		if(speaker_key && (speaker_key in ignoring))
+		if(speaker_ckey && (speaker_ckey in ignoring))
 			continue
 
 		switch(message_type)

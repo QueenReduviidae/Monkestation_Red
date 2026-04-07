@@ -8,10 +8,24 @@
 	foodtypes = MEAT | SUGAR
 	food_flags = FOOD_FINGER_FOOD
 	w_class = WEIGHT_CLASS_TINY
+	/// The mob typepath to spawn when hydrated.
 	var/spawned_mob = /mob/living/carbon/human/species/monkey
-	/// Whether we've been wetted and are expanding
+	/// The mob typepath to spawn if the cube has been shaken.
+	var/shaken_mob = /mob/living/carbon/human/species/monkey/angry/nohelmet
+	/// Whether we've been wetted and are expanding.
 	var/expanding = FALSE
 
+
+/obj/item/food/monkeycube/attack_self(mob/user, modifiers)
+	if(isnull(shaken_mob) || !ispath(shaken_mob, spawned_mob)) // just gonna always assume shaken_mob will be a subtype of spawned_mob
+		return
+	if(spawned_mob == shaken_mob)
+		user.balloon_alert(user, "already shaken!")
+		return
+	spawned_mob = shaken_mob
+	user.balloon_alert_to_viewers("shakes \the [src]!")
+	playsound(src, 'sound/effects/can_shake.ogg', vol = 40, vary = TRUE)
+	user.log_message("shook [src], agitating [spawned_mob] into [shaken_mob]", LOG_ATTACK)
 
 /obj/item/food/monkeycube/proc/Expand()
 	if(expanding)
@@ -26,7 +40,7 @@
 	var/mob/spammer = get_mob_by_key(fingerprintslast)
 
 	var/mob/living/bananas
-	if(spawned_mob == /mob/living/carbon/human/species/monkey)
+	if(ispath(spawned_mob, /mob/living/carbon/human/species/monkey))
 		bananas = new spawned_mob(drop_location(), TRUE, spammer)
 	else
 		bananas = new spawned_mob(drop_location())
@@ -113,6 +127,17 @@
 	)
 	tastes = list("buzzing" = 1, "honey" = 1, "regret" = 1)
 	spawned_mob = /mob/living/basic/bee
+
+/obj/item/food/monkeycube/dangerous_horse
+	name = "a pony cube"
+	desc = "This is a cube that, when water is added, creates a syndicate pony powerful enough to break the enemy's face!"
+	bite_consumption = 10
+	food_reagents = list(
+		/datum/reagent/toxin = 15,
+		/datum/reagent/medicine/strange_reagent = 1,
+	)
+	tastes = list("the loss of 5 TC" = 1, "eaten friend" = 1)
+	spawned_mob = /mob/living/basic/pony/dangerous
 
 /obj/item/food/monkeycube/cow
 	name = "Cow cube"

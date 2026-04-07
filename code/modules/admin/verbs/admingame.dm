@@ -305,7 +305,7 @@ ADMIN_VERB(manage_job_slots, R_ADMIN, FALSE, "Manage Job Slots", "Manage the num
 /datum/admins/proc/manage_free_slots()
 	if(!check_rights())
 		return
-	var/datum/browser/browser = new(usr, "jobmanagement", "Manage Free Slots", 520)
+	var/datum/browser/browser = new(usr, "jobmanagement", "Manage Free Slots", 580)
 	var/list/dat = list()
 	var/count = 0
 
@@ -368,7 +368,7 @@ ADMIN_VERB(combo_hud, R_ADMIN, FALSE, "Toggle Combo HUD", "Toggles the Admin Com
 
 	combo_hud_enabled = TRUE
 
-	for (var/hudtype in list(DATA_HUD_SECURITY_ADVANCED, DATA_HUD_MEDICAL_ADVANCED, DATA_HUD_DIAGNOSTIC_ADVANCED))
+	for (var/hudtype in list(DATA_HUD_SECURITY_ADVANCED, DATA_HUD_MEDICAL_ADVANCED, DATA_HUD_DIAGNOSTIC_ADVANCED, DATA_HUD_SIMIAN))
 		var/datum/atom_hud/atom_hud = GLOB.huds[hudtype]
 		atom_hud.show_to(mob)
 
@@ -384,7 +384,7 @@ ADMIN_VERB(combo_hud, R_ADMIN, FALSE, "Toggle Combo HUD", "Toggles the Admin Com
 
 	combo_hud_enabled = FALSE
 
-	for (var/hudtype in list(DATA_HUD_SECURITY_ADVANCED, DATA_HUD_MEDICAL_ADVANCED, DATA_HUD_DIAGNOSTIC_ADVANCED))
+	for (var/hudtype in list(DATA_HUD_SECURITY_ADVANCED, DATA_HUD_MEDICAL_ADVANCED, DATA_HUD_DIAGNOSTIC_ADVANCED, DATA_HUD_SIMIAN))
 		var/datum/atom_hud/atom_hud = GLOB.huds[hudtype]
 		atom_hud.hide_from(mob)
 
@@ -440,3 +440,10 @@ ADMIN_VERB(lag_switch_panel, R_ADMIN, FALSE, "Show Lag Switches", "Display the c
 	dat += "</body></html>"
 	user << browse(dat.Join(), "window=lag_switch_panel;size=420x480")
 	BLACKBOX_LOG_ADMIN_VERB("Lag Switch Panel") //MONKE EDIT
+
+ADMIN_VERB(spawn_panel, R_SPAWN, FALSE, "Spawn Panel", "Spawn Panel (TGUI).", ADMIN_CATEGORY_GAME)
+	var/datum/spawnpanel/panel = get_spawnpanel_for_admin(user.mob)
+	if(panel)
+		panel.ui_interact(user.mob)
+	BLACKBOX_LOG_ADMIN_VERB("Spawn Panel")
+
